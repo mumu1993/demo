@@ -1,15 +1,16 @@
 <template>
   <div>
-    i am item
+    <itemcontainer father-component="item"></itemcontainer>
   </div>
 </template>
 
 <script>
+import itemcontainer from '../../components/itemcontainer'
 
   export default {
     name: '',
     components: {
-
+      itemcontainer
     },
     created(){
 
