@@ -13,12 +13,18 @@
           <div class="item-list-container" v-if="this.$store.state.itemDetail.length > 0">
             <p>{{itemDetail[itemNum -1].topic_name}}</p>
             <ul>
-              <li v-for="(item, index) in itemDetail[itemNum - 1].topic_answer"></li>
+              <li v-for="(item, index) in itemDetail[itemNum - 1].topic_answer"
+                  @click="choosed(index, item.topic_answer_id)"
+                  class="">
+                <span class="option-style" v-bind:class="{'has_choosed':choosedNum == index}">{{chooseType(index)
+                  }}</span>
+                <span class="option-txt">{{item.answer_name}}</span>
+              </li>
             </ul>
-
           </div>
-
         </div>
+        <span class="next-btn button_style" v-if="itemNum < itemDetail.length" @click="nextItem"></span>
+        <span class="submit-btn button_style" v-else @click="submitAnswer"></span>
       </div>
     </div>
 </template>
@@ -30,18 +36,46 @@
 export default {
     name: 'itemcontainer',
     components: {},
-    methods: {
-
-    },
-    created(){
-
-    },
-    props: ['fatherComponent'],
     data(){
       return {
-
+        choosedNum:null,
+        choosedId:null
       }
     },
+    methods: {
+      chooseType(type) {
+          switch (type){
+            case 0: return 'A';
+            case 1: return 'B';
+            case 2: return 'C';
+            case 3: return 'D';
+          }
+      },
+      choosed(type, id){
+        this.choosedNum = type;
+        this.choosedId= id;
+      },
+      nextItem(){
+
+        if (this.choosedNum !== null){
+            this.choosedNum = null;
+            this.$store.dispatch('addNum', this.choosedId);
+
+        }else {
+            alert('你还没选择答案！')
+        }
+      },
+      submitAnswer(){
+        if (this.choosedNum !== null){
+
+        }
+      }
+    },
+    created(){
+      this.$store.dispatch('initializeData')
+    },
+    props: ['fatherComponent'],
+
     computed: mapState({
       level: state => state.level,
       itemNum: state => state.itemNum,
@@ -99,7 +133,17 @@ export default {
       top: 2.4rem;
       left: 3rem;
       -webkit-font-smoothing: antialiased;
+      color: #fff;
     }
+  }
+  .has_choosed{
+    color: red;
+  }
+  .next-btn{
+    background-image: url(../images/2-2.png);
+  }
+  .submit-btn{
+    background-image: url(../images/3-1.png);
   }
   .home-logo{
     height: 11.625rem;
