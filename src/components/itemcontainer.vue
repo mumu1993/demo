@@ -67,7 +67,10 @@ export default {
       },
       submitAnswer(){
         if (this.choosedNum !== null){
-
+          this.$store.dispatch('addNum', this.choosedId);
+          this.$router.push('score');
+        }else {
+            alert('你还没有选择答案！')
         }
       }
     },
